@@ -1,0 +1,74 @@
+/* General styles*/
+body {
+    background-color: pink;
+    font: sans-serif;
+    margin: 20;
+    background-color: lavender;
+    text-align: left;
+    color: orchid;
+    padding: 15px;
+
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: 
+        "logo title title"
+        "main main side"
+        "main main side" 
+        "footer footer footer";
+}
+
+.box {
+    border: solid 1px #000; /* Not the order: - solid (style) -width of the line (in px) - color of line (but in US spelling)*/
+    margin: 5px;
+    padding: 18px;
+    border-radius: 18px;
+    border-color: mediumpurple
+    
+}
+
+.logo {
+    grid-area: logo; /* This tells the css that we are refering to the logo section in our grid above in wrapper */
+    
+}
+
+.title {
+    grid-area: title;
+    font-size: 25px;
+
+}
+
+.main {
+    grid-area: main;
+    background-color: white;
+    text-align: left;
+    color: mediumpurple;
+    font-size: 18px;
+}
+
+.side{
+    grid-area: side;
+    background-color: white;
+    color: mediumpurple;
+    font-size: 18px
+}
+
+.footer {
+    grid-area: footer;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    font-size: 18px;
+}
+   
+
+ .logo, .title {
+    background-color: white; /* Dark purple */
+    color: orchid; /* Set font on dark backgorund to white */
+    
+} 
+
+
