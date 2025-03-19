@@ -1,14 +1,14 @@
 /* General styles*/
 body {
     background-color: pink;
-    font: sans-serif;
-    margin: 20;
+    margin: 0;
     background-color: lavender;
     text-align: left;
     color: orchid;
     padding: 15px;
-
 }
+
+/* -000- Start of styling of grids -000- */ 
 
 .wrapper {
     display: grid;
@@ -16,7 +16,7 @@ body {
     grid-template-rows: auto;
     grid-template-areas: 
         "logo title title"
-        "main main side"
+        "nav nav side"
         "main main side" 
         "footer footer footer";
 }
@@ -32,14 +32,29 @@ body {
 
 .logo {
     grid-area: logo; /* This tells the css that we are refering to the logo section in our grid above in wrapper */
-    
+    background-image: url(VR%20logo.jpg);
+    background-size: cover;
+    height: 124px
 }
 
 .title {
     grid-area: title;
     font-size: 25px;
-
+    background-image: url(VR%20background.jpg);
+    background-size: cover;
+    height: 124px;
+    color: white;
+    max-width: 100%;
 }
+
+.nav {
+    grid-area: nav;
+    background-color: white;
+    text-align: center;
+    font-size:20px;
+    max-width: 100%;
+}
+
 
 .main {
     grid-area: main;
@@ -47,13 +62,14 @@ body {
     text-align: left;
     color: mediumpurple;
     font-size: 18px;
+    max-width: 100%
 }
 
 .side{
     grid-area: side;
     background-color: white;
     color: mediumpurple;
-    font-size: 18px
+        
 }
 
 .footer {
@@ -63,12 +79,17 @@ body {
     text-align: center;
     font-size: 18px;
 }
-   
 
- .logo, .title {
-    background-color: white; /* Dark purple */
-    color: orchid; /* Set font on dark backgorund to white */
-    
-} 
+img {
+            max-width: 100%;
+            height: auto;
+}
 
+
+/* -000- End of styling of grids -000- */
+
+/* -000- Styling of links in the nav bar -000- */
+.nav a {text-decoration: none; font-weight: bold; padding: 1%; font-size: 150%;  } /* removes underline of text and make it bold */
+.nav a: link, .nav a :visited {color: skyblue;} 
+.nav a:hover  {color: orchid; text-decoration: underline}
 
