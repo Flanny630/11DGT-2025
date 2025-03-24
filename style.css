@@ -1,0 +1,101 @@
+/* General styles*/
+body {
+    background-color: pink;
+    margin: 0;
+    background-color: lavender;
+    text-align: left;
+    color: orchid;
+    padding: 15px;
+}
+
+/* -000- Start of styling of grids -000- */ 
+
+.wrapper {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: 
+        "logo title title"
+        "nav nav side"
+        "main main side" 
+        "footer footer footer";
+}
+
+.box {
+    border: solid 1px #000; /* Not the order: - solid (style) -width of the line (in px) - color of line (but in US spelling)*/
+    margin: 5px;
+    padding: 18px;
+    border-radius: 18px;
+    border-color: mediumpurple
+    
+}
+
+.logo {
+    grid-area: logo; /* This tells the css that we are refering to the logo section in our grid above in wrapper */
+    background-image: url(images/VRlogo.jpg);
+    background-size: cover;
+    height: 124px
+}
+
+.title {
+    grid-area: title;
+    font-size: 25px;
+    background-image: url(images/VRbackground.jpg);
+    background-size: cover;
+    height: 124px;
+    color: white;
+    max-width: 100%;
+}
+
+.nav {
+    grid-area: nav;
+    background-color: white;
+    text-align: center;
+    font-size:20px;
+    max-width: 100%;
+    color: orchid;
+}
+
+
+.main {
+    grid-area: main;
+    background-color: white;
+    text-align: left;
+    color: mediumpurple;
+    font-size: 18px;
+    max-width: 100%
+}
+
+.side{
+    grid-area: side;
+    background-color: white;
+    color: mediumpurple;
+        
+}
+
+.footer {
+    grid-area: footer;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    font-size: 18px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+
+/* -000- End of styling of grids -000- */
+
+/* -000- Styling of links in the nav bar -000- */
+.nav a {text-decoration: none; font-weight: bold; padding: 1%; font-size: 150%;  } /* removes underline of text and make it bold */
+.nav a: link, .nav a :visited {color: skyblue;} 
+.nav a:hover  {color: orchid; text-decoration: underline}
+
+hr{
+    border-color: mediumpurple;
+    
+}
+
