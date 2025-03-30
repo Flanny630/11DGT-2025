@@ -1,11 +1,10 @@
 /* General styles*/
 body {
-    background-color: pink;
     margin: 0;
-    background-color: lavender;
     text-align: left;
     color: orchid;
     padding: 15px;
+    background-image: linear-gradient(to right, lavender , pink)
 }
 
 /* -000- Start of styling of grids -000- */ 
@@ -33,17 +32,20 @@ body {
 .logo {
     grid-area: logo; /* This tells the css that we are refering to the logo section in our grid above in wrapper */
     background-image: url(images/VRlogo.jpg);
+    opacity: 0.8;
     background-size: cover;
     height: 124px
+    
 }
 
 .title {
     grid-area: title;
     font-size: 25px;
+     color: white;
     background-image: url(images/VRbackground.jpg);
+    opacity: 0.9;
     background-size: cover;
     height: 124px;
-    color: white;
     max-width: 100%;
 }
 
@@ -53,7 +55,7 @@ body {
     text-align: center;
     font-size:20px;
     max-width: 100%;
-    color: orchid;
+    color: violet;
 }
 
 
@@ -98,4 +100,5 @@ hr{
     border-color: mediumpurple;
     
 }
+
 
