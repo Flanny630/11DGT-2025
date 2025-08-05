@@ -2,12 +2,13 @@
 # Flanny Xue
 # Version 1_2
 # June 2025
-# TODO: Decreasing the measurments of the game page - making it smaller (done)
+# TODO: Inserting the player image into the game (done)
 
 # Import the pygame library to use it
 import pygame
 import time
 import random
+from pygame import image as img
 pygame.font.init()
 
 # # Setting the size of the display window (constant values)
@@ -24,6 +25,10 @@ BG = pygame.transform.scale(BG, (WIDTH, HEIGHT))
 # Width and height of sprite
 Player_width = 60
 Player_height = 80
+
+# Co-ordinates for player to start
+x = 100
+y = 300
 
 # Set the velocity to control speed of sprite and obstacle
 Player_vel = 5 
@@ -44,8 +49,8 @@ def draw(player, elapsed_time, plants):
     time_text = FONT.render(f"Time: {round(elapsed_time)}s", 1, "white")
     WIN.blit(time_text, (10,10)) # Padding on the screen
 
-    # Making the character
-    pygame.draw.rect(WIN, "red", player) 
+    # Placing the character
+    WIN.blit(player,(x,y))
 
     # Making the plants
     for plant in plants:
@@ -57,8 +62,9 @@ def draw(player, elapsed_time, plants):
 def main():
     run = True
 
-    # Placing the player
-    player = pygame.Rect(400, HEIGHT - Player_height, Player_width, Player_height)
+    # Making the character
+    player = img.load("G_front.png")
+    player = pygame.transform.scale(player, (60, 80))
 
     # Creating a clock object to make sure it moves at a constant speed
     clock = pygame.time.Clock()
@@ -103,14 +109,14 @@ def main():
 
         # Move the stars
         # Check if the plant has collided with the player. If they've collided then I want to remove this star because it hit the player. 
-        for plant in plants[:]:
+        '''for plant in plants[:]:
             plant.y += Plant_vel 
             if plant.y > HEIGHT:
                 plants.remove(plant)
             elif plant.y + plant.height >= player.y and plant.colliderect(player): # '.colliderect' tells us if two rectangles have collided.
                 plants.remove(plant)
                 hit = True
-                break
+                break'''
 
         # Drawing the finishing page / got hit page onto the window.
         if hit:

@@ -2,12 +2,13 @@
 # Flanny Xue
 # Version 1_2
 # June 2025
-# TODO: Decreasing the measurments of the game page - making it smaller (done)
+# TODO: Adding the adjusted sized player image into the game & adding a new placement (done)
 
 # Import the pygame library to use it
 import pygame
 import time
 import random
+from pygame import image as img
 pygame.font.init()
 
 # # Setting the size of the display window (constant values)
@@ -22,8 +23,12 @@ BG = pygame.image.load("bg.jpeg")
 BG = pygame.transform.scale(BG, (WIDTH, HEIGHT))
 
 # Width and height of sprite
-Player_width = 60
-Player_height = 80
+Player_width = 107
+Player_height = 186
+
+# Co-ordinates for player to start
+x = 250
+y = 500
 
 # Set the velocity to control speed of sprite and obstacle
 Player_vel = 5 
@@ -37,15 +42,15 @@ PLANT_HEIGHT= 40
 FONT = pygame.font.SysFont("comicsans", 30)
 
 # Inserting the image as background
-def draw(player, elapsed_time, plants):
+def draw(player, player_image, elapsed_time, plants): # adding player image parameter
     WIN.blit(BG, (0, 0))
 
     # Rendering the seconds into words which would show as e.g "2s" in white
     time_text = FONT.render(f"Time: {round(elapsed_time)}s", 1, "white")
     WIN.blit(time_text, (10,10)) # Padding on the screen
 
-    # Making the character
-    pygame.draw.rect(WIN, "red", player) 
+    # Placing the character
+    WIN.blit(player_image,(player.x, player.y)) # adding player image with player.x and player .y
 
     # Making the plants
     for plant in plants:
@@ -57,8 +62,11 @@ def draw(player, elapsed_time, plants):
 def main():
     run = True
 
-    # Placing the player
-    player = pygame.Rect(400, HEIGHT - Player_height, Player_width, Player_height)
+    # Loading player_image and adding the rect around to player to 
+    # player image to detect collisions
+    player_image = img.load("G_back.png")
+    player_image = pygame.transform.scale(player_image, (122, 212))
+    player = pygame.Rect(x, y, Player_width, Player_height)
 
     # Creating a clock object to make sure it moves at a constant speed
     clock = pygame.time.Clock()
@@ -101,7 +109,7 @@ def main():
         if keys[pygame.K_RIGHT] and player.x + Player_vel + Player_width <= WIDTH:
             player.x += Player_vel
 
-        # Move the stars
+        # Move the plant
         # Check if the plant has collided with the player. If they've collided then I want to remove this star because it hit the player. 
         for plant in plants[:]:
             plant.y += Plant_vel 
@@ -119,8 +127,9 @@ def main():
             pygame.display.update()
             pygame.time.delay(4000) # Delaying the results in 4 seconds
             break
-
-        draw(player, elapsed_time, plants)
+        
+        # Calling the draw function to draw, player rect, player image, elapsed time and the plants
+        draw(player, player_image, elapsed_time, plants)
     
     pygame.quit()
 
