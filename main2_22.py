@@ -2,7 +2,7 @@
 # Flanny Xue
 # Version 1_4
 # August 2025
-# TODO: Set the projecitles to start at the new horizon line (done)
+# TODO: Add a start page & only start the game when "space" key is pressed (done)
 
 # Import the pygame library to use it
 import pygame
@@ -30,6 +30,10 @@ PLANT_IMAGE = pygame.transform.scale(PLANT_IMAGE, (64, 65))
 BUSH_IMAGE = pygame.image.load("bush.png")
 BUSH_IMAGE = pygame.transform.scale(BUSH_IMAGE, (80, 60))  # Making bush a bit wider
 
+# Loading the start page image
+START_PAGE_IMAGE = pygame.image.load("start_page.png")
+START_PAGE_IMAGE = pygame.transform.scale(START_PAGE_IMAGE, (WIDTH, HEIGHT))
+
 # Width and height of sprite
 Player_width = 107
 Player_height = 186
@@ -52,10 +56,32 @@ BUSH_WIDTH = 80
 BUSH_HEIGHT = 60
 
 # Set the horizon line where projectiles start appearing (adjustable)
-HORIZON_LINE = 260  # Adjustable horizon
+HORIZON_LINE = 200  # You can change this number to adjust where projectiles start!
 
 # Setting up the font of all texts
 FONT = pygame.font.SysFont("comicsans", 30)
+
+# Function to show the starting page
+def show_start_page():
+    waiting_for_start = True
+    
+    while waiting_for_start:
+        # Display the starting image
+        WIN.blit(START_PAGE_IMAGE, (0, 0))
+        
+        pygame.display.update()
+        
+        # Check for events
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                return False  # Exit the program
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:  # Space key pressed
+                    waiting_for_start = False
+                    return True  # Start the game
+    
+    return True
 
 # Inserting the image as background
 def draw(player, player_image, elapsed_time, plants, bushes):
@@ -155,7 +181,7 @@ def main():
                 run = False
                 break 
         
-        # Movement code
+        # Movement code (player)
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] and player.x - Player_vel >= 0:
             player.x -= Player_vel
@@ -180,7 +206,7 @@ def main():
             elif bush.y + bush.height >= player.y and bush.colliderect(player):
                 bushes.remove(bush)
                 hit = True
-                break
+                break  
 
         # Drawing the finishing page / got hit page onto the window
         if hit:
@@ -192,8 +218,14 @@ def main():
         
         # Calling the draw function with both plants and bushes
         draw(player, player_image, elapsed_time, plants, bushes)
+
+        # Create info icon here
     
     pygame.quit()
 
 if __name__ == "__main__":
-    main()
+    # Show starting page first
+    if show_start_page():
+        main()  # Only start the game if space was pressed
+
+        

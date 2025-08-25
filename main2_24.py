@@ -2,7 +2,7 @@
 # Flanny Xue
 # Version 1_4
 # August 2025
-# TODO: Set the projecitles to start at the new horizon line (done)
+# TODO: Info icon leads to info page
 
 # Import the pygame library to use it
 import pygame
@@ -30,6 +30,18 @@ PLANT_IMAGE = pygame.transform.scale(PLANT_IMAGE, (64, 65))
 BUSH_IMAGE = pygame.image.load("bush.png")
 BUSH_IMAGE = pygame.transform.scale(BUSH_IMAGE, (80, 60))  # Making bush a bit wider
 
+# Loading the start page image
+START_PAGE_IMAGE = pygame.image.load("start_page.png")
+START_PAGE_IMAGE = pygame.transform.scale(START_PAGE_IMAGE, (WIDTH, HEIGHT))
+
+# Loading the info icon image
+INFO_ICON_IMAGE = pygame.image.load("info_icon.png") 
+INFO_ICON_IMAGE = pygame.transform.scale(INFO_ICON_IMAGE, (40, 40))  # Make it small for game screen
+
+# Loading the info popup image
+INFO_POPUP_IMAGE = pygame.image.load("info_page.png")
+INFO_POPUP_IMAGE = pygame.transform.scale(INFO_POPUP_IMAGE,(WIDTH,HEIGHT)) # Scale it to start where the screen starts
+
 # Width and height of sprite
 Player_width = 107
 Player_height = 186
@@ -52,18 +64,69 @@ BUSH_WIDTH = 80
 BUSH_HEIGHT = 60
 
 # Set the horizon line where projectiles start appearing (adjustable)
-HORIZON_LINE = 260  # Adjustable horizon
+HORIZON_LINE = 200  # You can change this number to adjust where projectiles start!
 
 # Setting up the font of all texts
 FONT = pygame.font.SysFont("comicsans", 30)
 
-# Inserting the image as background
+def show_start_page():
+
+    waiting_for_start = True
+    show_info_popup = False
+    
+    # Info icon position (top right corner)
+    info_icon_x = WIDTH - 85  # appear 85 pixels away from the right edge
+    info_icon_y = 30  # appear 30 pixels from top
+    info_icon_rect = pygame.Rect(info_icon_x, info_icon_y, 40, 40)  # Create the rectangle for clicking
+    
+    while waiting_for_start:
+        # Display the starting image
+        WIN.blit(START_PAGE_IMAGE, (0, 0))
+        
+        # Draw the info icon
+        WIN.blit(INFO_ICON_IMAGE, (info_icon_x, info_icon_y))
+        
+        # If the info popup is shown, draw the fullscreen image
+        if show_info_popup:
+            # Draw the info popup image to fill the whole screen
+            WIN.blit(INFO_POPUP_IMAGE, (0, 0))
+        
+        pygame.display.update()
+        
+        # Check for events
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                return False  # Exit the program
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:  # Space key pressed
+                    if show_info_popup:
+                        show_info_popup = False  # Close popup if it's open
+                    else:
+                        waiting_for_start = False
+                        return True  # Start the game if popup is closed
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:  # Left mouse button
+                    mouse_x, mouse_y = event.pos
+                    # Check if clicked on info icon (only when popup is not shown)
+                    if not show_info_popup and info_icon_rect.collidepoint(mouse_x, mouse_y):
+                        show_info_popup = True
+    
+    return True
+
+# Update your draw function to include the info icon:
+
 def draw(player, player_image, elapsed_time, plants, bushes):
     WIN.blit(BG, (0, 0))
 
     # Rendering the seconds into words which would show as e.g "2s" in white
     time_text = FONT.render(f"Time: {round(elapsed_time)}s", 1, "white")
     WIN.blit(time_text, (10, 10))
+
+    # Drawing the info icon in top right corner (during the game)
+    info_icon_x = WIDTH - 75  # 50 pixels from right edge
+    info_icon_y = 20  # 10 pixels from top
+    WIN.blit(INFO_ICON_IMAGE, (info_icon_x, info_icon_y))
 
     # Drawing the plant images FIRST (so they appear behind player)
     for plant in plants:
@@ -155,7 +218,7 @@ def main():
                 run = False
                 break 
         
-        # Movement code
+        # Movement code (player)
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] and player.x - Player_vel >= 0:
             player.x -= Player_vel
@@ -180,7 +243,7 @@ def main():
             elif bush.y + bush.height >= player.y and bush.colliderect(player):
                 bushes.remove(bush)
                 hit = True
-                break
+                break  
 
         # Drawing the finishing page / got hit page onto the window
         if hit:
@@ -192,8 +255,12 @@ def main():
         
         # Calling the draw function with both plants and bushes
         draw(player, player_image, elapsed_time, plants, bushes)
+
+        # Create info icon here
     
     pygame.quit()
 
 if __name__ == "__main__":
-    main()
+    # Show starting page first
+    if show_start_page():
+        main()  # Only start the game if space was pressed

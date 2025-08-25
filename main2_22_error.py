@@ -2,7 +2,7 @@
 # Flanny Xue
 # Version 1_4
 # August 2025
-# TODO: Set the projecitles to start at the new horizon line (done)
+# TODO: Added bush element that falls slower
 
 # Import the pygame library to use it
 import pygame
@@ -19,7 +19,7 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Tane and the Three Baskets of Knowledge") 
 
 # Importing my background image
-BG = pygame.image.load("bg2.jpeg")
+BG = pygame.image.load("bg.jpeg")
 BG = pygame.transform.scale(BG, (WIDTH, HEIGHT))
 
 # Loading and scaling the plant image
@@ -52,10 +52,31 @@ BUSH_WIDTH = 80
 BUSH_HEIGHT = 60
 
 # Set the horizon line where projectiles start appearing (adjustable)
-HORIZON_LINE = 260  # Adjustable horizon
+HORIZON_LINE = 200  # You can change this number to adjust where projectiles start!
 
 # Setting up the font of all texts
 FONT = pygame.font.SysFont("comicsans", 30)
+
+# Function to show the starting page
+def show_start_page():
+    waiting_for_start = True
+    
+    while waiting_for_start:
+        # Display the starting image
+        WIN.blit("start_page.png", (0, 0))
+        pygame.display.update()
+        
+        # Check for events
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                return False  # Exit the program
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:  # Space key pressed
+                    waiting_for_start = False
+                    return True  # Start the game
+    
+    return True
 
 # Inserting the image as background
 def draw(player, player_image, elapsed_time, plants, bushes):
@@ -196,4 +217,6 @@ def main():
     pygame.quit()
 
 if __name__ == "__main__":
-    main()
+    # Show starting page first
+    if show_start_page():
+        main()  # Only start the game if space was pressed

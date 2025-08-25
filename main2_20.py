@@ -1,7 +1,7 @@
 # My final game submission
 # Flanny Xue
 # Version 1_4
-# June 2025
+# August 2025
 # TODO: Sizing down both of the projectile rectangles (done)
 
 # Import the pygame library to use it
