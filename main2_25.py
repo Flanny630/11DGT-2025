@@ -2,7 +2,7 @@
 # Flanny Xue
 # Version 1_4
 # August 2025
-# TODO: Info icon leads to info page (done)
+# TODO: Create a finish page that stays on until the player presses quit (done)
 
 # Import the pygame library to use it
 import pygame
@@ -36,11 +36,15 @@ START_PAGE_IMAGE = pygame.transform.scale(START_PAGE_IMAGE, (WIDTH, HEIGHT)) # S
 
 # Loading the info icon image
 INFO_ICON_IMAGE = pygame.image.load("info_icon.png") 
-INFO_ICON_IMAGE = pygame.transform.scale(INFO_ICON_IMAGE, (40, 40))  # Make it small for game screen
+INFO_ICON_IMAGE = pygame.transform.scale(INFO_ICON_IMAGE, (47, 47))  # Make it small for game screen
 
 # Loading the info popup image
-INFO_POPUP_IMAGE = pygame.image.load("info_page.png")
+INFO_POPUP_IMAGE = pygame.image.load("info_page2.png")
 INFO_POPUP_IMAGE = pygame.transform.scale(INFO_POPUP_IMAGE,(WIDTH,HEIGHT)) # Scale it to start where the screen starts
+
+# Loading the finish page image
+FINISH_PAGE_IMAGE = pygame.image.load("finish_page.png")
+FINISH_PAGE_IMAGE = pygame.transform.scale(FINISH_PAGE_IMAGE, (WIDTH, HEIGHT)) # Scale it to start where the screen starts
 
 # Width and height of sprite
 Player_width = 107
@@ -75,9 +79,9 @@ def show_start_page():
     show_info_popup = False
     
     # Info icon position (top right corner)
-    info_icon_x = WIDTH - 85  # appear 85 pixels away from the right edge
+    info_icon_x = WIDTH - 95  # appear 85 pixels away from the right edge
     info_icon_y = 30  # appear 30 pixels from top
-    info_icon_rect = pygame.Rect(info_icon_x, info_icon_y, 40, 40)  # Create the rectangle for clicking
+    info_icon_rect = pygame.Rect(info_icon_x, info_icon_y, 47, 47)  # Create the rectangle for clicking
     
     while waiting_for_start:
         # Display the starting image
@@ -245,16 +249,24 @@ def main():
                 hit = True
                 break  
 
-        # Drawing the finishing page / got hit page onto the window
+        # Drawing the finish page when hit & keep the loop running to stay on finish page
         if hit:
-            lost_text = FONT.render("You Lost!", 1, "white")
-            WIN.blit(lost_text, (WIDTH/2 - lost_text.get_width()/2, HEIGHT/2 - lost_text.get_height()/2))
-            pygame.display.update()
-            pygame.time.delay(4000)
-            break
+            # Show finish page and wait for events
+            while True:
+                # Display the finish page image fullscreen
+                WIN.blit(FINISH_PAGE_IMAGE, (0, 0))
+                pygame.display.update()
+                
+                # Check for events (still need to handle window closing)
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        return  # Exit the function
+
         
         # Calling the draw function with both plants and bushes
         draw(player, player_image, elapsed_time, plants, bushes)
+
 
     
     pygame.quit()

@@ -2,7 +2,7 @@
 # Flanny Xue
 # Version 1_4
 # August 2025
-# TODO: Info icon leads to info page (done)
+# TODO: Create a home button on the finish page that leads back to the start screen (done)
 
 # Import the pygame library to use it
 import pygame
@@ -36,11 +36,19 @@ START_PAGE_IMAGE = pygame.transform.scale(START_PAGE_IMAGE, (WIDTH, HEIGHT)) # S
 
 # Loading the info icon image
 INFO_ICON_IMAGE = pygame.image.load("info_icon.png") 
-INFO_ICON_IMAGE = pygame.transform.scale(INFO_ICON_IMAGE, (40, 40))  # Make it small for game screen
+INFO_ICON_IMAGE = pygame.transform.scale(INFO_ICON_IMAGE, (47, 47))  # Make it small for game screen
 
 # Loading the info popup image
-INFO_POPUP_IMAGE = pygame.image.load("info_page.png")
+INFO_POPUP_IMAGE = pygame.image.load("info_page2.png")
 INFO_POPUP_IMAGE = pygame.transform.scale(INFO_POPUP_IMAGE,(WIDTH,HEIGHT)) # Scale it to start where the screen starts
+
+# Loading the finish page image
+FINISH_PAGE_IMAGE = pygame.image.load("finish_page.png")
+FINISH_PAGE_IMAGE = pygame.transform.scale(FINISH_PAGE_IMAGE, (WIDTH, HEIGHT)) # Scale it to start where the screen starts
+
+# Loading the (back) home button image
+HOME_BUTTON_IMAGE = pygame.image.load("home_button.png")
+HOME_BUTTON_IMAGE = pygame.transform.scale(HOME_BUTTON_IMAGE, (120, 60))
 
 # Width and height of sprite
 Player_width = 107
@@ -75,9 +83,9 @@ def show_start_page():
     show_info_popup = False
     
     # Info icon position (top right corner)
-    info_icon_x = WIDTH - 85  # appear 85 pixels away from the right edge
+    info_icon_x = WIDTH - 95  # appear 85 pixels away from the right edge
     info_icon_y = 30  # appear 30 pixels from top
-    info_icon_rect = pygame.Rect(info_icon_x, info_icon_y, 40, 40)  # Create the rectangle for clicking
+    info_icon_rect = pygame.Rect(info_icon_x, info_icon_y, 47, 47)  # Create the rectangle for clicking
     
     while waiting_for_start:
         # Display the starting image
@@ -137,7 +145,7 @@ def draw(player, player_image, elapsed_time, plants, bushes):
     
     # Drawing the bush images SECOND (so they appear behind player)
     for bush in bushes:
-        # Draw image at original position 
+        # Draw image at original position
         image_x = bush.x - BUSH_WIDTH // 4
         image_y = bush.y - BUSH_HEIGHT // 4
         WIN.blit(BUSH_IMAGE, (image_x, image_y))
@@ -245,21 +253,51 @@ def main():
                 hit = True
                 break  
 
-        # Drawing the finishing page / got hit page onto the window
+        # Drawing the finish page when hit & keep the loop running to stay on finish page
+        # Adding the home button onto the finish page
+
         if hit:
-            lost_text = FONT.render("You Lost!", 1, "white")
-            WIN.blit(lost_text, (WIDTH/2 - lost_text.get_width()/2, HEIGHT/2 - lost_text.get_height()/2))
-            pygame.display.update()
-            pygame.time.delay(4000)
-            break
+            # Home button's position - bottom left corner of the finish page
+            home_button_x = WIDTH - 580 # 500 pixels away from the right edge
+            home_button_y = HEIGHT - 80 # 80 pixels away from the botton edge 
+            home_button_rect = pygame.Rect(home_button_x, home_button_y, 580, 60)
+
+            # Show finish page and wait for events
+            while True:
+                # Display the finish page image fullscreen
+                WIN.blit(FINISH_PAGE_IMAGE, (0, 0))
+
+                # Draw the home button
+                WIN.blit(HOME_BUTTON_IMAGE, (home_button_x, home_button_y))
+    
+                pygame.display.update()
+                
+                # Check for events (still need to handle window closing)
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        return  # Exit the function
+                    elif event.type == pygame.MOUSEBUTTONDOWN:
+                        if event.button == 1:
+                            mouse_x, mouse_y = event.pos
+                    
+                            # Check if the player have clicked on the home button
+                            if home_button_rect.collidepoint(mouse_x, mouse_y):
+                                return # Exit main functino to restart game
+
         
         # Calling the draw function with both plants and bushes
         draw(player, player_image, elapsed_time, plants, bushes)
 
+        
     
     pygame.quit()
 
 if __name__ == "__main__":
-    # Show starting page first
-    if show_start_page():
-        main()  # Only start the game if space was pressed
+    # Game restart loop
+    while True:
+        # Show starting page first
+        if show_start_page():
+            main()  # Only start the game if space was pressed
+        else:
+            break # Exit if start page was closed

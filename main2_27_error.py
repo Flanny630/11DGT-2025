@@ -2,7 +2,7 @@
 # Flanny Xue
 # Version 1_4
 # August 2025
-# TODO: Info icon leads to info page (done)
+# TODO: Create a start again button on the finish page and restart the game when clicked (done)
 
 # Import the pygame library to use it
 import pygame
@@ -36,11 +36,23 @@ START_PAGE_IMAGE = pygame.transform.scale(START_PAGE_IMAGE, (WIDTH, HEIGHT)) # S
 
 # Loading the info icon image
 INFO_ICON_IMAGE = pygame.image.load("info_icon.png") 
-INFO_ICON_IMAGE = pygame.transform.scale(INFO_ICON_IMAGE, (40, 40))  # Make it small for game screen
+INFO_ICON_IMAGE = pygame.transform.scale(INFO_ICON_IMAGE, (47, 47))  # Make it small for game screen
 
 # Loading the info popup image
-INFO_POPUP_IMAGE = pygame.image.load("info_page.png")
+INFO_POPUP_IMAGE = pygame.image.load("info_page2.png")
 INFO_POPUP_IMAGE = pygame.transform.scale(INFO_POPUP_IMAGE,(WIDTH,HEIGHT)) # Scale it to start where the screen starts
+
+# Loading the finish page image
+FINISH_PAGE_IMAGE = pygame.image.load("finish_page.png")
+FINISH_PAGE_IMAGE = pygame.transform.scale(FINISH_PAGE_IMAGE, (WIDTH, HEIGHT)) # Scale it to start where the screen starts
+
+# Loading the (back) home button image
+HOME_BUTTON_IMAGE = pygame.image.load("home_button.png")
+HOME_BUTTON_IMAGE = pygame.transform.scale(HOME_BUTTON_IMAGE, (140, 60))
+
+# Loading the start (again) icon image
+START_AGAIN_IMAGE = pygame.image.load("start_again_image.png")
+START_AGAIN_IMAGE = pygame.transform.scale(START_AGAIN_IMAGE, (180, 80)) 
 
 # Width and height of sprite
 Player_width = 107
@@ -75,9 +87,9 @@ def show_start_page():
     show_info_popup = False
     
     # Info icon position (top right corner)
-    info_icon_x = WIDTH - 85  # appear 85 pixels away from the right edge
+    info_icon_x = WIDTH - 95  # appear 85 pixels away from the right edge
     info_icon_y = 30  # appear 30 pixels from top
-    info_icon_rect = pygame.Rect(info_icon_x, info_icon_y, 40, 40)  # Create the rectangle for clicking
+    info_icon_rect = pygame.Rect(info_icon_x, info_icon_y, 47, 47)  # Create the rectangle for clicking
     
     while waiting_for_start:
         # Display the starting image
@@ -245,21 +257,76 @@ def main():
                 hit = True
                 break  
 
-        # Drawing the finishing page / got hit page onto the window
+        # Drawing the finish page when hit & keep the loop running to stay on finish page
+        # Adding the start_again_image onto the finish page
+
         if hit:
-            lost_text = FONT.render("You Lost!", 1, "white")
-            WIN.blit(lost_text, (WIDTH/2 - lost_text.get_width()/2, HEIGHT/2 - lost_text.get_height()/2))
-            pygame.display.update()
-            pygame.time.delay(4000)
-            break
+            # Start again button's position - bottom right corner of the finish page
+            start_again_x = WIDTH - 210  # 210 pixels away from the right edge
+            start_again_y = HEIGHT - 100  # 100 pixels away from the bottom edge
+            start_again_rect = pygame.Rect(start_again_x, start_again_y, 210, 100)
+
+            # Home button's position - bottom left corner of the finish page
+            home_button_x = 20  # 20 pixels from left edge
+            home_button_y = HEIGHT - 85  # 85 pixels away from the bottom edge 
+            home_button_rect = pygame.Rect(home_button_x, home_button_y, 20, 85)
+
+            # Show finish page and wait for events
+            while True:
+                # Display the finish page image fullscreen
+                WIN.blit(FINISH_PAGE_IMAGE, (0, 0))
+
+                # Draw the start again button 
+                WIN.blit(START_AGAIN_IMAGE, (start_again_x, start_again_y))
+
+                # Draw the home button
+                WIN.blit(HOME_BUTTON_IMAGE, (home_button_x, home_button_y))
+    
+                pygame.display.update()
+                
+                # Check for events (still need to handle window closing)
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        return  # Exit the function
+                    elif event.type == pygame.MOUSEBUTTONDOWN:
+                        if event.button == 1:
+                            mouse_x, mouse_y = event.pos
+                            # Check if clicked on start again button
+                            if start_again_rect.collidepoint(mouse_x, mouse_y):
+                                # Reset all game variables and restart immediately
+                                plants.clear()  # Remove all plants
+                                bushes.clear()  # Remove all bushes
+                                hit = False  # Reset hit status
+                                start_time = time.time()  # Reset timer
+                                elapsed_time = 0
+                                plant_count = 0  # Reset plant timer
+                                bush_count = 0  # Reset bush timer
+                                plant_add_increment = 2000  # Reset plant speed
+                                bush_add_increment = 4000  # Reset bush speed
+                                
+                                # Reset player position
+                                player.x = x  # Reset to starting x position
+                                
+                                break  # Exit finish page loop to continue game
+                            
+                            # Check if the player has clicked on the home button
+                            elif home_button_rect.collidepoint(mouse_x, mouse_y):
+                                return  # Exit main function to go back to start page
+
         
         # Calling the draw function with both plants and bushes
         draw(player, player_image, elapsed_time, plants, bushes)
 
     
+    
     pygame.quit()
 
 if __name__ == "__main__":
-    # Show starting page first
-    if show_start_page():
-        main()  # Only start the game if space was pressed
+    # Game restart loop
+    while True:
+        # Show starting page first
+        if show_start_page():
+            main()  # Only start the game if space was pressed
+        else:
+            break # Exit if start page was closed
