@@ -128,8 +128,7 @@ def draw(player, player_image, elapsed_time, plants, bushes):
 def main():
     run = True
 
-    # Loading player_image and adding the rect around to player to 
-    # player image to detect collisions
+    # Loading player_image and adding the rect around to player to detect collisions
     player_image = img.load("G_back.png")
     player_image = pygame.transform.scale(player_image, (122, 212))
     
