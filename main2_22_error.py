@@ -2,7 +2,7 @@
 # Flanny Xue
 # Version 1_4
 # August 2025
-# TODO: Added bush element that falls slower (done)
+# TODO: Add an information icon image to the starting page (bugged)
 
 # Import the pygame library to use it
 import pygame
