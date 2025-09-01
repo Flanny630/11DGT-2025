@@ -55,8 +55,8 @@ PLANT_HEIGHT = 60
 BUSH_WIDTH = 80
 BUSH_HEIGHT = 60
 
-# Set the horizon line where projectiles start appearing (adjustable)
-HORIZON_LINE = 200  # You can change this number to adjust where projectiles start!
+# Set the horizon line where projectiles start appearing 
+HORIZON_LINE = 200 
 
 # Setting up the font of all texts
 FONT = pygame.font.SysFont("comicsans", 30)
@@ -93,14 +93,14 @@ def draw(player, player_image, elapsed_time, plants, bushes):
 
     # Drawing the plant images FIRST (so they appear behind player)
     for plant in plants:
-        # Draw image at original position (plant.x - offset, plant.y - offset)
+        # Draw image at original position 
         image_x = plant.x - PLANT_WIDTH // 4
         image_y = plant.y - PLANT_HEIGHT // 4
         WIN.blit(PLANT_IMAGE, (image_x, image_y))
     
     # Drawing the bush images SECOND (so they appear behind player)
     for bush in bushes:
-        # Draw image at original position (bush.x - offset, bush.y - offset)
+        # Draw image at original position 
         image_x = bush.x - BUSH_WIDTH // 4
         image_y = bush.y - BUSH_HEIGHT // 4
         WIN.blit(BUSH_IMAGE, (image_x, image_y))
@@ -219,7 +219,7 @@ def main():
         # Calling the draw function with both plants and bushes
         draw(player, player_image, elapsed_time, plants, bushes)
 
-        # Create info icon here
+       
     
     pygame.quit()
 
