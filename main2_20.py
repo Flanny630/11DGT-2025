@@ -64,14 +64,14 @@ def draw(player, player_image, elapsed_time, plants, bushes):
 
     # Drawing the plant images FIRST (so they appear behind player)
     for plant in plants:
-        # Draw image at original position (plant.x - offset, plant.y - offset)
+        # Draw image at original position 
         image_x = plant.x - PLANT_WIDTH // 4
         image_y = plant.y - PLANT_HEIGHT // 4
         WIN.blit(PLANT_IMAGE, (image_x, image_y))
     
     # Drawing the bush images SECOND (so they appear behind player)
     for bush in bushes:
-        # Draw image at original position (bush.x - offset, bush.y - offset)
+        # Draw image at original position 
         image_x = bush.x - BUSH_WIDTH // 4
         image_y = bush.y - BUSH_HEIGHT // 4
         WIN.blit(BUSH_IMAGE, (image_x, image_y))
@@ -85,8 +85,7 @@ def draw(player, player_image, elapsed_time, plants, bushes):
 def main():
     run = True
 
-    # Loading player_image and adding the rect around to player to 
-    # player image to detect collisions
+    # Loading player_image and adding the rect around the player to detect collisions
     player_image = img.load("G_back.png")
     player_image = pygame.transform.scale(player_image, (122, 212))
     
