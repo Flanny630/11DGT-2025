@@ -59,8 +59,8 @@ PLANT_HEIGHT = 60
 BUSH_WIDTH = 80
 BUSH_HEIGHT = 60
 
-# Set the horizon line where projectiles start appearing (adjustable)
-HORIZON_LINE = 200  # You can change this number to adjust where projectiles start!
+# Set the horizon line where projectiles start appearing 
+HORIZON_LINE = 200  
 
 # Setting up the font of all texts
 FONT = pygame.font.SysFont("comicsans", 30)
@@ -92,8 +92,6 @@ def show_start_page():
                     return True  # Start the game
     
     return True
-
-# Update your draw function to include the info icon:
 
 def draw(player, player_image, elapsed_time, plants, bushes):
     WIN.blit(BG, (0, 0))
@@ -235,7 +233,7 @@ def main():
         # Calling the draw function with both plants and bushes
         draw(player, player_image, elapsed_time, plants, bushes)
 
-        # Create info icon here
+        
     
     pygame.quit()
 
