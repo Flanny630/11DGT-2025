@@ -2,7 +2,7 @@
 # Flanny Xue
 # Version 1_4
 # August 2025
-# TODO: Create a start again button on the finish page.
+# TODO: Create a start again button on the finish page. (done)
 
 # Import the pygame library to use it
 import pygame
