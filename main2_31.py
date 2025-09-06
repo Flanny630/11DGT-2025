@@ -360,6 +360,9 @@ def main():
                     pygame.mixer.music.play(-1)
                     break  # Break from inner loop to restart the game
                 elif choice == "home":
+                    pygame.mixer.music.load("bgm.mp3")
+                    pygame.mixer.music.set_volume(0.6)
+                    pygame.mixer.music.play(-1)
                     return "home"  # Return to start page
                 elif choice == "quit":
                     return "quit"  # Exit completely
